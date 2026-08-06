@@ -1,8 +1,13 @@
-print ('Hello workld')
-rows = 5
+from flask import Flask
+app = Flask(__name__)
 
-for i in range(1, rows + 1):
-    print(" " * (rows - i) + "*" * (2 * i - 1))
-print ('pipeline done')
+@app.route('/')
+def home():
+    return "Hello World! The Flask app is running."
 
-print ('need to practice')
+@app.route('/health')
+def health():
+    return {"status": "healthy"}, 200
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=False)
