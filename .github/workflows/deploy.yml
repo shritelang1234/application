@@ -1,0 +1,40 @@
+name: Deploy Python App to GCP VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to GCP VM
+        uses: appleboy/ssh-action@v1.2.0
+
+        with:
+          host: 136.113.30.59
+          username: shritelang1234
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+
+          script: |
+            cd ~/application
+
+            git pull origin main
+
+            if [ ! -d "venv" ]; then
+              python3 -m venv venv
+            fi
+
+            source venv/bin/activate
+
+            pip install -r requirements.txt
+
+            pkill -f app.py || true
+
+            nohup python3 app.py > app.log 2>&1 &
