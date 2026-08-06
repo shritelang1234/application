@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Check for untracked files
-if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-    echo "Untracked files found. Staging all changes..."
+# Check for any changes (modified, untracked, deleted)
+if [ -n "$(git status --porcelain)" ]; then
+    echo "Changes detected. Staging all changes..."
     git add .
 else
-    echo "No untracked files found. Skipping git add."
+    echo "No changes found. Skipping git add."
 fi
 
 # Ask for commit message
