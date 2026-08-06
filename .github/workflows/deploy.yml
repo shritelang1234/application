@@ -23,9 +23,19 @@ jobs:
           port: 22
 
           script: |
+            # Create application directory if it doesn't exist
+            mkdir -p ~/application
             cd ~/application
 
-            git pull origin main
+            # Initialize git repository if not already initialized
+            if [ ! -d ".git" ]; then
+              git init
+              git remote add origin https://github.com/shritelang1234/application.git
+              git fetch
+              git reset --hard origin/main
+            else
+              git pull origin main
+            fi
 
             if [ ! -d "venv" ]; then
               python3 -m venv venv
